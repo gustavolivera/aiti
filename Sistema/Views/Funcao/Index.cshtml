@@ -1,0 +1,105 @@
+﻿@model Domain.Domain.Funcao;
+
+    <div class="container bg-white p-4 rounded mt-5">
+        <div class="row">
+            <!-- Área de Motivos -->
+
+            <!-- Área de Complementos -->
+            <div class="m-auto col-md-6 mb-5">
+                <h3>Funções</h3>
+                <ul class="list-group mb-3">
+                    <!-- Exemplo de item da lista -->
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        funcao 1
+                        <span>
+                            <button class="btn btn-sm btn-warning me-2">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        funcao 2
+                        <span>
+                            <button class="btn btn-sm btn-warning me-2">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                         funcao 3
+                        <span>
+                            <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editSectorModal">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </span>
+                    </li>
+                </ul>
+                <!-- Formulário para cadastrar nova funcao -->
+                <form asp-action="Create">
+                    <div class="mb-3">
+                        <label for="selectSetor" class="form-label">Selecione o Setor</label>
+                        <div class="form-group">
+                            <label asp-for="Setor" class="control-label">Setor</label>
+                            <select asp-for="SetorId" asp-items="@ViewBag.Setores" class="form-control">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="Setor" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="noa funcao" class="form-label">Nova função</label>
+                        <input asp-for="Nome" type="text" class="form-control" id="novafuncao" placeholder="Digite a funcao">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cadastrar função</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+        <!-- Modal de Confirmação -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirmar Deleção</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Tem certeza que deseja deletar este item?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger">Deletar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!--Modal de edicao-->
+            <div class="modal fade" id="editSectorModal" tabindex="-1" aria-labelledby="editSectorModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editSectorModalLabel">Editar Nome do Setor</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="sectorName" placeholder="Digite o novo nome do setor">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>

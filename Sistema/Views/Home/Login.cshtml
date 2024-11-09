@@ -1,0 +1,42 @@
+﻿@model Domain.Domain.Usuario
+
+@{
+	Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Login</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+	<div class="container">
+		<form asp-controller="Home" asp-action="Login">
+			<div class="row mb-3">
+				<div class="col-4 offset-4">
+					<label class="col-form-label">Login</label>
+					<input asp-for="Login" class="form-control" />
+					<span asp-validation-for="Login" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-4 offset-4">
+					<label class="col-form-label">Senha</label>
+					<input type="password" asp-for="Senha" class="form-control" />
+					<span asp-validation-for="Senha" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-4 offset-4">
+					<button type="submit" class="btn btn-primary">Entrar</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>
