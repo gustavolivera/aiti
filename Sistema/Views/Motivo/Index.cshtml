@@ -1,4 +1,4 @@
-﻿@model Domain.Domain.Motivo;
+﻿@model MotivoViewModel;
 
     <div class="container bg-white p-4 rounded mt-5">
         <div class="row">
@@ -7,45 +7,26 @@
                 <h3>Motivos</h3>
                 <ul class="list-group mb-3">
                     <!-- Exemplo de item da lista -->
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Motivo 1
-                        <span>
-                            <button class="btn btn-sm btn-warning me-2">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-                        </span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Motivo 2
-                        <span>
-                            <button class="btn btn-sm btn-warning me-2">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-                        </span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Motivo 2
-                        <span>
-                            <button class="btn btn-sm btn-warning me-2">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-                        </span>
-                    </li>                    
+                @foreach (var motivos in Model.Motivos)
+                {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @Html.DisplayFor(modelItem => motivos.Nome)
+                                <span>
+                                    <button class="text-white btn btn-sm btn-warning me-2">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </span>
+                            </li>
+                }                                  
                 </ul>
                 <!-- Formulário para cadastrar novo motivo -->
                 <form asp-action="Create">
                     <div class="mb-3">
                         <label for="novoMotivo" class="form-label">Novo Motivo</label>
-                        <input asp-for="Nome" class="form-control" placeholder="Digite o motivo">
+                        <input asp-for="NovoMotivo.Nome" class="form-control" placeholder="Digite o motivo">
                     </div>
                     <button type="submit" class="btn btn-primary">Cadastrar Motivo</button>
                 </form>

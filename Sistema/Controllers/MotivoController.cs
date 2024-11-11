@@ -2,6 +2,8 @@
 using Domain.EF;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sistema.Models;
+using System.Collections.Generic;
 
 namespace Sistema.Controllers
 {
@@ -17,7 +19,14 @@ namespace Sistema.Controllers
         // GET: MotivoController
         public ActionResult Index()
         {
-            return View();
+            Motivo motivo = new Motivo();
+            List<Motivo> motivos = motivo.BuscarTodos(_context);
+            var viewModel = new MotivoViewModel
+            {
+                Motivos = motivos,
+                NovoMotivo = new Motivo()
+            };
+            return View(viewModel);
         }
 
         // GET: MotivoController/Details/5

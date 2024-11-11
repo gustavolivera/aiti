@@ -8,6 +8,7 @@ using Sistema.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace Sistema.Controllers
 {
@@ -24,9 +25,9 @@ namespace Sistema.Controllers
         // GET: ChamadoController
         public ActionResult Index()
         {
+            List<Chamado> chamados = new Chamado().BuscarTodos(_context).ToList();
 
-
-            return View();
+            return View(chamados);
         }
 
         // GET: ChamadoController/Details/5
@@ -66,8 +67,19 @@ namespace Sistema.Controllers
             {
                 viewmodel.NovoChamado.Status = "Aberto";
                 viewmodel.NovoChamado.DataHora_inicio = DateTime.UtcNow;
-                
-                
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
+                                                                             // Converte o ID do usuário para inteiro
+                int usuarioId = int.Parse(userId);
+
+                // Consulta o banco de dados para obter o PessoaId associado ao UsuarioId
+                var pessoa = _context.Pessoas.FirstOrDefault(p => p.UsuarioId == usuarioId);
+
+                if (pessoa != null)
+                {
+                    // Atribui o PessoaId ao chamado
+                    viewmodel.NovoChamado.PessoaId = pessoa.Id;
+                }
 
                 viewmodel.NovoChamado.Salvar(_context);
                 return RedirectToAction(nameof(Create));

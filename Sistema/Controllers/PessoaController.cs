@@ -105,5 +105,17 @@ namespace Sistema.Controllers
                 return View();
             }
         }
+
+        public IActionResult Logout()
+        {
+            // Remover todos os cookies relacionados à autenticação
+            foreach (var cookie in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookie);
+            }
+
+            // Redirecionar para a página de login ou home
+            return RedirectToAction("Login", "Home");
+        }
     }
 }

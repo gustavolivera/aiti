@@ -18,12 +18,60 @@ namespace Domain.EF
         internal DbSet<Complemento> Complementos { get; set; }
         internal DbSet<Funcao> Funcoes { get; set; }
         internal DbSet<Motivo> Motivos { get; set; }
-        internal DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Pessoa> Pessoas { get; set; }
         internal DbSet<Setor> Setores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           modelBuilder.Entity<Usuario>(t =>
+            modelBuilder.Entity<Chamado>(entity =>
+            {
+                // Configuração de chave primária
+                entity.HasKey(e => e.Id);
+
+                // Relacionamento com Pessoa (um-para-muitos)
+                entity.HasOne(e => e.Pessoa)
+                    .WithMany()
+                    .HasForeignKey(e => e.PessoaId)
+                    .OnDelete(DeleteBehavior.Restrict); // Define o comportamento de exclusão
+
+                // Relacionamento com Motivo (um-para-muitos)
+                entity.HasOne(e => e.Motivos)
+                    .WithMany()
+                    .HasForeignKey(e => e.MotivoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Relacionamento com Complemento (um-para-muitos)
+                entity.HasOne(e => e.Complemento)
+                    .WithMany()
+                    .HasForeignKey(e => e.ComplementoId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Relacionamento com Atendimento (um-para-muitos)
+                entity.HasMany(e => e.Atendimento)
+                    .WithOne()
+                    .HasForeignKey("ChamadoId") // Defina o nome da coluna de chave estrangeira em Atendimento
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Propriedades simples
+                entity.Property(e => e.Urgencia)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(50)
+                    .IsRequired();
+
+                entity.Property(e => e.Observacoes)
+                    .HasMaxLength(500); // Defina o tamanho máximo conforme necessário
+
+                entity.Property(e => e.DataHora_inicio)
+                    .IsRequired();
+
+                entity.Property(e => e.DataHora_fim)
+                    .IsRequired();
+            });
+
+            modelBuilder.Entity<Usuario>(t =>
             {
                 t.ToTable("Usuarios");
                 t.Property(t => t.Id).HasColumnType("int").

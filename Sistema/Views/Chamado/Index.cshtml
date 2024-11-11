@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<Domain.Domain.Chamado>;
+
     <div class="container bg-white p-4 rounded mt-5">
       <h3 class="mb-3">Fluxo de chamados</h3>
       <div class="row">
@@ -7,6 +8,7 @@
               <table class="table table-hover">
                   <thead class="table-dark">
                       <tr>
+                          <th></th>
                           <th scope="col">ID</th>
                           <th scope="col">Motivo</th>
                           <th scope="col">Complemento</th>
@@ -16,20 +18,19 @@
                   </thead>
                   <tbody>
                       <!-- Exemplo de linha da tabela -->
-                      <tr>
-                          <th scope="row">1</th>
-                          <td>Motivo Exemplo</td>
-                          <td>Complemento Exemplo</td>
-                          <td>Alta</td>
-                          <td>Aberto</td>
-                      </tr>
-                      <tr>
-                          <th scope="row">2</th>
-                          <td>Motivo Exemplo 2</td>
-                          <td>Complemento Exemplo 2</td>
-                          <td>Média</td>
-                          <td>Em Progresso</td>
-                      </tr>
+                    @foreach (var chamado in Model)
+                    {
+                <tr>
+                    <td>
+                        <input type="radio" name="selectedChamadoId" value="@chamado.Id" data-observacoes="@chamado.Observacoes" />
+                    </td>
+                    <td>@chamado.Id</td>
+                    <td>@chamado.Motivos?.Nome</td> <!-- Nome do Motivo associado -->
+                    <td>@chamado.Complemento?.Nome</td> <!-- Nome do Complemento associado -->
+                    <td>@chamado.Urgencia</td>
+                    <td>@chamado.Status</td>
+                </tr>
+                    }
                   </tbody>
               </table>
 
@@ -50,7 +51,7 @@
                       <h5 class="card-title">E-mail</h5>
                       <p class="card-text">usuario@exemplo.com</p>
                       <h5 class="card-title">Observações</h5>
-                      <p class="card-text">Observações do Solicitante</p>
+                      <p class="card-text" id="observacoesTexto"></p>
                   </div>
               </div>
               <div class="d-flex gap-3">
@@ -62,3 +63,20 @@
       </div>
   </div>
       
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const atenderButton = document.getElementById("atenderButton");
+        const observacoesTexto = document.getElementById("observacoesTexto");
+
+        // Adiciona um evento a todos os radiobuttons
+        document.querySelectorAll("input[name='selectedChamadoId']").forEach(radio => {
+            radio.addEventListener("change", function () {
+                // Habilita o botão "Atender"
+                //atenderButton.disabled = false;
+
+                // Atualiza o texto das observações com base no chamado selecionado
+                observacoesTexto.textContent = radio.getAttribute("data-observacoes") || "Sem observações.";
+            });
+        });
+    });
+</script>

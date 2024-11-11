@@ -3,6 +3,7 @@ using Domain.EF;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Sistema.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,6 +26,15 @@ namespace Sistema.Controllers
             var MotivosList = Motivos.Select(c => new SelectListItem() { Text = c.Nome, Value = c.Id.ToString() }).ToList();
             ViewBag.Motivos = MotivosList;
 
+            Complemento complemento = new Complemento();
+            List<Complemento> complementos = complemento.BuscarTodos(_context);
+            var viewModel = new ComplementoViewModel
+            {
+                Complementos = complementos,
+                NovoComplemento = new Complemento()
+            };
+            return View(viewModel);
+
             return View("Index");
         }
 
@@ -43,11 +53,11 @@ namespace Sistema.Controllers
         // POST: ComplementoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Complemento complemento)
+        public ActionResult Create(ComplementoViewModel complemento)
         {
             try
             {
-                complemento.Salvar(_context);
+                complemento.NovoComplemento.Salvar(_context);
                 return RedirectToAction(nameof(Index));
             }
             catch

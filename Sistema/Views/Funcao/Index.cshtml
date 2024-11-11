@@ -1,4 +1,4 @@
-﻿@model Domain.Domain.Funcao;
+﻿@model FuncaoViewModel;
 
     <div class="container bg-white p-4 rounded mt-5">
         <div class="row">
@@ -9,55 +9,38 @@
                 <h3>Funções</h3>
                 <ul class="list-group mb-3">
                     <!-- Exemplo de item da lista -->
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        funcao 1
-                        <span>
-                            <button class="btn btn-sm btn-warning me-2">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-                        </span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        funcao 2
-                        <span>
-                            <button class="btn btn-sm btn-warning me-2">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-                        </span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                         funcao 3
-                        <span>
-                            <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editSectorModal">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-                        </span>
-                    </li>
+                @foreach (var funcoes in Model.Funcoes)
+                {
+                   <li id="funcaoSelect" data-motivoid="@funcoes.SetorId" class="list-group-item d-flex justify-content-between align-items-center">
+                  @Html.DisplayFor(modelItem => funcoes.Nome)
+                    <span>
+                        <button class="text-white btn btn-sm btn-warning me-2">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
+                        <form asp-action="DeletePost">
+                            <input type="hidden" name="id" value="@funcoes.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger"> <i class="bi bi-trash-fill"></i> </button>
+                       </form>
+                    </span>
+                 </li>
+                }                 
+                 
                 </ul>
                 <!-- Formulário para cadastrar nova funcao -->
                 <form asp-action="Create">
                     <div class="mb-3">
                         <label for="selectSetor" class="form-label">Selecione o Setor</label>
                         <div class="form-group">
-                            <label asp-for="Setor" class="control-label">Setor</label>
-                            <select asp-for="SetorId" asp-items="@ViewBag.Setores" class="form-control">
+                            <label asp-for="NovaFuncao.Setor" class="control-label">Setor</label>
+                            <select asp-for="NovaFuncao.SetorId" asp-items="@ViewBag.Setores" id="setorSelect" class="form-control">
                                 <option></option>
                             </select>
-                            <span asp-validation-for="Setor" class="text-danger"></span>
+                            <span asp-validation-for="NovaFuncao.Setor" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="noa funcao" class="form-label">Nova função</label>
-                        <input asp-for="Nome" type="text" class="form-control" id="novafuncao" placeholder="Digite a funcao">
+                        <input asp-for="NovaFuncao.Nome" type="text" class="form-control" id="novafuncao" placeholder="Digite a funcao">
                     </div>
                     <button type="submit" class="btn btn-primary">Cadastrar função</button>
                 </form>
@@ -103,3 +86,25 @@
                     </div>
                 </div>
             </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Quando o motivo for alterado
+        $('#setorSelect').on('change', function() {
+            var selectedSetorId = $(this).val(); // Pega o ID do setor selecionado
+
+            // Esconde todos os funcoes
+            $('#funcaoSelect li').hide();
+
+            // Mostra apenas os complementos que têm o motivoId igual ao selecionado
+            $('#funcaoSelect li[data-setorid="' + selectedSetorId + '"]').show();
+
+            // Selecione a opção padrão "Selecione um complemento"
+            $('#complementoSelect').val('');
+        });
+
+        // Quando a página carregar, esconder todos os complementos inicialmente
+        $('#funcaoSelect li[data-setorid]').hide();
+    });
+</script>
