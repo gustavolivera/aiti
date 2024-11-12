@@ -2,41 +2,73 @@
 
     <div class="container bg-white p-4 rounded mt-5">
       <h3 class="mb-3">Fluxo de chamados</h3>
-    <form asp-action="EditPost" method="post" id="atenderForm">
       <div class="row">
           <!-- Área de Tabela -->
-          <div class="col-md-8 mb-5">
-              <table class="table table-hover">
-                  <thead class="table-dark">
-                      <tr>
-                          <th></th>
-                          <th scope="col">ID</th>
-                          <th scope="col">Motivo</th>
-                          <th scope="col">Complemento</th>
-                          <th scope="col">Urgência</th>
-                          <th scope="col">Status</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <!-- Exemplo de linha da tabela -->
-                    @foreach (var chamado in Model)
-                    {
-                <tr>
-                    <td>
-                      <input asp-for="@chamado.Id" type="radio" name="selectedChamadoId" value="@chamado.Id" data-observacoes="@chamado.Observacoes" />
-                    </td>
-                    <td>@chamado.Id</td>
-                    <td>@chamado.Motivos?.Nome</td> <!-- Nome do Motivo associado -->
-                    <td>@chamado.Complemento?.Nome</td> <!-- Nome do Complemento associado -->
-                    <td>@chamado.Urgencia</td>
-                    <td>@chamado.Status</td>
-                </tr>
-                    }
-                  </tbody>
-              </table>
+          <div class="col-md-12 mb-5">
+ <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th></th>
+                <th scope="col">ID</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Complemento</th>
+                <th scope="col">Urgência</th>
+                <th scope="col">Status</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+                        @foreach (var chamado in Model)
+                        {
+                    <tr>
+                        <td>
+                            <input class="mt-1" asp-for="@chamado.Id" type="radio" name="selectedChamadoId" value="@chamado.Id" data-observacoes="@chamado.Observacoes" />
+                        </td>
+                        <td>@chamado.Id</td>
+                        <td>@chamado.Motivos?.Nome</td>
+                        <td>@chamado.Complemento?.Nome</td>
+                        <td>@chamado.Urgencia</td>
+                        <td>@chamado.Status</td>
+                        <td>
+                                                        <!-- Ícone "Em andamento" -->
+                            <form asp-action="AlterarStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@chamado.Id" />
+                                <button type="submit" name="novoStatus" value="Em andamento" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Em andamento">
+                                    <i class="bi bi-hourglass-split text-warning"></i>
+                                </button>
+                            </form>
+
+                            <!-- Ícone "Concluído" -->
+                            <form asp-action="AlterarStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@chamado.Id" />
+                                <button type="submit" name="novoStatus" value="Concluido" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Concluído">
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                </button>
+                            </form>
+
+                            <!-- Ícone "Pausado" -->
+                            <form asp-action="AlterarStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@chamado.Id" />
+                                <button type="submit" name="novoStatus" value="Pausado" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Pausado">
+                                    <i class="bi bi-pause-circle text-secondary"></i>
+                                </button>
+                            </form>
+
+                            <!-- Botão "Gerar Relatório" -->
+                            <form asp-action="AlterarStatus" method="post" style="display: inline;">
+                                <input type="hidden" name="id" value="@chamado.Id" />
+                                <button type="submit" name="novoStatus" value="Relatorio" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Gerar Relatório">
+                                    <i class="bi bi-file-earmark-text text-info"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                        }
+        </tbody>
+    </table>
           </div>
           <!-- Área de Informações do Usuário -->
-          <div class="col-md-4">
+          @* <div class="col-md-4">
               <div class="card mb-3">
                   <div class="card-header bg-dark text-white">
                       Informações do Usuário
@@ -60,8 +92,7 @@
                 <button class="btn btn-dark">Gerar Relatório</button>
             </div>
           </div>
-      </div>
-    </form>
+      </div> *@
   </div>
       
 <script>
@@ -80,6 +111,14 @@
             });
         });
     });
+</script>
+ 
+<script>
+    // Inicializa tooltips do Bootstrap
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 </script>
 
 

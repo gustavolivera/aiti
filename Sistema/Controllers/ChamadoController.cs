@@ -25,7 +25,7 @@ namespace Sistema.Controllers
         // GET: ChamadoController
         public ActionResult Index()
         {
-            List<Chamado> chamados = new Chamado().BuscarTodos(_context).ToList();
+            List<Chamado> chamados = new Chamado().BuscarTodos(_context).Where(c => c.Status != "Relatorio").ToList();
 
             return View(chamados);
         }
@@ -132,6 +132,19 @@ namespace Sistema.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public IActionResult AlterarStatus(int id, string novoStatus)
+        {
+            var chamado = _context.Chamados.Find(id);
+            if (chamado != null)
+            {
+                chamado.Status = novoStatus;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
