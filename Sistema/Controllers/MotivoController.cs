@@ -44,13 +44,13 @@ namespace Sistema.Controllers
         // POST: MotivoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Motivo motivo)
+        public ActionResult Create(MotivoViewModel viewmodel)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    motivo.Salvar(_context);
+                    viewmodel.NovoMotivo.Salvar(_context);
                     return RedirectToAction(nameof(Index));
                 }
                 else

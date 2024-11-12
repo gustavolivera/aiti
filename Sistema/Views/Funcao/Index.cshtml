@@ -1,11 +1,11 @@
 ﻿@model FuncaoViewModel;
 
-    <div class="container bg-white p-4 rounded mt-5">
+    <div class="container bg-white p-4 rounded mt-5 col-6">
         <div class="row">
             <!-- Área de Motivos -->
 
             <!-- Área de Complementos -->
-            <div class="m-auto col-md-6 mb-5">
+            <div class="m-auto mb-5">
                 <h3>Funções</h3>
                 <ul class="list-group mb-3">
                     <!-- Exemplo de item da lista -->
@@ -29,7 +29,7 @@
                 <!-- Formulário para cadastrar nova funcao -->
                 <form asp-action="Create">
                     <div class="mb-3">
-                        <label for="selectSetor" class="form-label">Selecione o Setor</label>
+                        <h5>Selecione o setor</h5>
                         <div class="form-group">
                             <label asp-for="NovaFuncao.Setor" class="control-label">Setor</label>
                             <select asp-for="NovaFuncao.SetorId" asp-items="@ViewBag.Setores" id="setorSelect" class="form-control">

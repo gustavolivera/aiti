@@ -14,7 +14,7 @@ namespace Domain.EF
 
         internal DbSet<Usuario> Usuarios { get; set; }
         internal DbSet<Atendimento> Atendimentos { get; set; }
-        internal DbSet<Chamado> Chamados { get; set; }
+        public DbSet<Chamado> Chamados { get; set; }
         internal DbSet<Complemento> Complementos { get; set; }
         internal DbSet<Funcao> Funcoes { get; set; }
         internal DbSet<Motivo> Motivos { get; set; }

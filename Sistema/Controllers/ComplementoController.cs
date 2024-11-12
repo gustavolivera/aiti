@@ -35,7 +35,6 @@ namespace Sistema.Controllers
             };
             return View(viewModel);
 
-            return View("Index");
         }
 
         // GET: ComplementoController/Details/5

@@ -99,16 +99,18 @@ namespace Sistema.Controllers
         // POST: ChamadoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditPost(int id)
         {
-            try
+            // Procura o chamado pelo ID e altera o status para "Em Atendimento"
+            Chamado chamado = new Chamado().BuscarPorId(_context, id);
+            if (chamado != null)
             {
-                return RedirectToAction(nameof(Index));
+                chamado.Status = "Em Atendimento";
+                _context.SaveChanges();
             }
-            catch
-            {
-                return View();
-            }
+
+            // Redireciona para a página de listagem após a atualização
+            return RedirectToAction("Index");
         }
 
         // GET: ChamadoController/Delete/5

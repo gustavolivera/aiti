@@ -2,6 +2,7 @@
 
     <div class="container bg-white p-4 rounded mt-5">
       <h3 class="mb-3">Fluxo de chamados</h3>
+    <form asp-action="EditPost" method="post" id="atenderForm">
       <div class="row">
           <!-- Área de Tabela -->
           <div class="col-md-8 mb-5">
@@ -22,7 +23,7 @@
                     {
                 <tr>
                     <td>
-                        <input type="radio" name="selectedChamadoId" value="@chamado.Id" data-observacoes="@chamado.Observacoes" />
+                      <input asp-for="@chamado.Id" type="radio" name="selectedChamadoId" value="@chamado.Id" data-observacoes="@chamado.Observacoes" />
                     </td>
                     <td>@chamado.Id</td>
                     <td>@chamado.Motivos?.Nome</td> <!-- Nome do Motivo associado -->
@@ -33,7 +34,6 @@
                     }
                   </tbody>
               </table>
-
           </div>
           <!-- Área de Informações do Usuário -->
           <div class="col-md-4">
@@ -55,12 +55,13 @@
                   </div>
               </div>
               <div class="d-flex gap-3">
-                <button class="btn btn-primary">Atender</button>
+                <button type="submit" class="btn btn-primary">Atender</button>
                 <button class="btn btn-success">Concluir</button>
                 <button class="btn btn-dark">Gerar Relatório</button>
             </div>
           </div>
       </div>
+    </form>
   </div>
       
 <script>
@@ -80,3 +81,6 @@
         });
     });
 </script>
+
+
+

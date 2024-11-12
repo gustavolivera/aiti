@@ -1,40 +1,39 @@
 ﻿@model SetorViewModel;
 
 
+<div class="container bg-white p-4 rounded mt-5 col-6">
+    <div class="row justify-content-center">
+        <!-- Área de Setores -->
+        <div class="mb-5 mx-auto">
+            <h3 class="text-center">Setores</h3>
+            <ul class="list-group mb-3">
+                @foreach (var setores in Model.Setores)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @Html.DisplayFor(modelItem => setores.Nome)
+                        <span>
+                            <button class="text-white btn btn-sm btn-warning me-2">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </span>
+                    </li>
+                }
+            </ul>
+            <!-- Formulário para cadastrar novo setor -->
+            <form asp-action="Create">
+                <div class="mb-3">
+                    <label for="novoMotivo" class="form-label">Novo setor</label>
+                    <input asp-for="NovoSetor.Nome" class="form-control" placeholder="Digite o setor">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Cadastrar setor</button>
+            </form>
+        </div>
+    </div>
+</div>
 
-    <div class="container bg-white p-4 rounded mt-5">
-        <div class="row">
-            <!-- Área de Motivos -->
-            <div class="col-md-6 mb-5">
-                <h3>Setores</h3>
-                <ul class="list-group mb-3">
-                    <!-- Exemplo de item da lista -->
-                    @foreach (var setores in Model.Setores)
-                    {
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            @Html.DisplayFor(modelItem => setores.Nome)
-                            <span>
-                                <button class="text-white btn btn-sm btn-warning me-2">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </span>
-                        </li>
-                    }                 
-                </ul>
-                <!-- Formulário para cadastrar novo setor -->
-                <form asp-action="Create">
-                    <div class="mb-3">
-                        <label for="novoMotivo" class="form-label">Novo setor</label>
-                        <input asp-for="NovoSetor.Nome" class="form-control" placeholder="Digite o setor">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Cadastrar setor</button>
-                </form>
-            </div>
-          </div>
-         </div>
           <!-- Área de Complementos -->
             
 

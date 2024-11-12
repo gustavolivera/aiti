@@ -13,30 +13,33 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 
-<body>
-	<div class="container">
-		<form asp-controller="Home" asp-action="Login">
-			<div class="row mb-3">
-				<div class="col-4 offset-4">
-					<label class="col-form-label">Login</label>
-					<input asp-for="Login" class="form-control" />
-					<span asp-validation-for="Login" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<div class="col-4 offset-4">
-					<label class="col-form-label">Senha</label>
-					<input type="password" asp-for="Senha" class="form-control" />
-					<span asp-validation-for="Senha" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<div class="col-4 offset-4">
-					<button type="submit" class="btn btn-primary">Entrar</button>
-				</div>
-			</div>
-		</form>
-	</div>
+<body style="background-color: #a0bac2;">
+    <div class="container bg-white p-4 rounded mt-5 col-5">
+        <h3 class="text-center mb-4 mt-4"><img src="@Url.Content("~/img/logo.png")" width="135" /></h3>
+        <form asp-controller="Home" asp-action="Login">
+            <div class="row mb-3 justify-content-center">
+                <div class="col-md-6 mt-4">
+                    <label class="col-form-label">Login</label>
+                    <input asp-for="Login" class="form-control" />
+                    <span asp-validation-for="Login" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center">
+                <div class="col-md-6 mt-4">
+                    <label class="col-form-label">Senha</label>
+                    <input type="password" asp-for="Senha" class="form-control" />
+                    <span asp-validation-for="Senha" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3 justify-content-center">
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100 mt-4">Entrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
 </body>
 
 </html>
