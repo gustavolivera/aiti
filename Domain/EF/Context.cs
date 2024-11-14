@@ -8,13 +8,9 @@ using System.Threading.Tasks;
 
 namespace Domain.EF
 {
-    public class Context:DbContext
+    public class Context : DbContext
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
-
-        public Context()
-        {
-        }
 
         internal DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Atendimento> Atendimentos { get; set; }
@@ -23,8 +19,7 @@ namespace Domain.EF
         public DbSet<Funcao> Funcoes { get; set; }
         public DbSet<Motivo> Motivos { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
-        public DbSet<Setor> Setores { get; set; }
-
+        public DbSet<Setor> Setores { get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Chamado>(entity =>
