@@ -1,5 +1,6 @@
 ﻿using Domain.Domain;
 using Domain.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace Sistema.Controllers
 {
+    [Authorize(Roles = "Tecnologia")]
     public class PessoaController : Controller
     {
         private readonly Context _context;

@@ -23,6 +23,7 @@ namespace Sistema.Controllers
 
 
         // GET: ChamadoController
+        [Authorize (Roles = "Tecnologia")]
         public ActionResult Index()
         {
             List<Chamado> chamados = new Chamado().BuscarTodos(_context).Where(c => c.Status != "Relatorio").ToList();
@@ -142,6 +143,35 @@ namespace Sistema.Controllers
             {
                 chamado.Status = novoStatus;
                 _context.SaveChanges();
+                if(chamado.Status == "Em andamento"){
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
+                                                                                 // Converte o ID do usuário para inteiro
+                    int usuarioId = int.Parse(userId);
+
+                    // Consulta o banco de dados para obter o PessoaId associado ao UsuarioId
+                    var pessoa = _context.Pessoas.FirstOrDefault(p => p.UsuarioId == usuarioId);
+                    Atendimento atendimento = new Atendimento()
+                    {
+                        ChamadoId = chamado.Id,
+                        PessoaId = pessoa.Id,
+                        DataHora_inicio = DateTime.Now
+                    };
+                    atendimento.Salvar(_context);
+                }
+
+                if(chamado.Status == "Concluido")
+                { 
+                    List<Atendimento> atendimentos = new Atendimento().BuscarTodos(_context).Where(a => a.ChamadoId == chamado.Id).ToList();
+                    foreach(var item in atendimentos)
+                    {
+                        if (item.DataHora_fim != DateTime.Now)
+                        {
+                            item.DataHora_fim = DateTime.Now;
+                        }
+                    }
+                    chamado.DataHora_fim = DateTime.Now;
+                    _context.SaveChanges();                
+                }   
             }
 
             return RedirectToAction("Index");

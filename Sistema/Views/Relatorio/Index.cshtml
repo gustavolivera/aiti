@@ -1,39 +1,90 @@
-﻿
-<div class="container bg-white p-4 rounded mt-5">
-  <h1 class="mb-4">Gestão de Chamados</h1>
+﻿@model RelatorioViewModel
+@{
+    
+}
 
-  <!-- Tabela de Chamados -->
-  <table class="table table-hover">
-      <thead class="table-dark">
-          <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Data Início</th>
-              <th scope="col">Data Término</th>
-              <th scope="col">Motivo</th>
-              <th scope="col">Solicitante</th>
-          </tr>
-      </thead>
-      <tbody>
-          <!-- Exemplo de linha da tabela -->
-          <tr>
-              <th scope="row">1</th>
-              <td>01/01/2023</td>
-              <td>02/01/2023</td>
-              <td>Motivo Exemplo</td>
-              <td>Solicitante Exemplo</td>
-          </tr>
-          <tr>
-              <th scope="row">2</th>
-              <td>03/01/2023</td>
-              <td>04/01/2023</td>
-              <td>Motivo Exemplo 2</td>
-              <td>Solicitante Exemplo 2</td>
-          </tr>
-      </tbody>
-  </table>
 
-  <!-- Botão Mostrar Detalhes -->
-  <div class="d-flex justify-content-end">
-      <button class="btn btn-primary">Mostrar Detalhes</button>
-  </div>
+  <div class="container bg-white p-4 rounded mt-5">
+    <h1 class="mb-4">Gestão de Chamados</h1>
+  
+  <!--  Tabela de Chamados -->
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Data Início</th>
+            <th scope="col">Data Término</th>
+            <th scope="col">Motivo</th>
+            <th scope="col">Solicitante</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Exemplo de linha da tabela -->
+            @foreach (var chamado in Model.Chamados)
+            {
+                <tr>
+                    <td>@chamado.Id</td>
+                    <td>@chamado.DataHora_inicio</td>
+                    <td>@chamado.DataHora_fim</td>
+                    <td>@chamado.Motivos.Nome</td>
+                    <td>@chamado.Pessoa.Nome</td>
+                    <td>
+                        <!-- Ícone de olho com modal -->
+                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#detalhesModal_@chamado.Id">
+                            <i class="bi bi-eye"></i>
+                        </button>
+
+                        <!-- Modal de detalhes do chamado -->
+                        <div class="modal fade" id="detalhesModal_@chamado.Id" tabindex="-1" aria-labelledby="detalhesModalLabel_@chamado.Id" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="detalhesModalLabel_@chamado.Id">Detalhes do Chamado - ID: @chamado.Id</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+     <div class="modal-body">
+        <div class="container">
+            <h5 class="text-primary mb-3">Detalhes do Chamado</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Solicitante:</strong> @chamado.Pessoa.Nome</p>
+                    <p><strong>Data da Solicitação:</strong> @chamado.DataHora_inicio</p>
+                    <p><strong>Data da Conclusão:</strong> @chamado.DataHora_fim</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Motivo:</strong> @chamado.Motivos.Nome</p>
+                    <p><strong>Complemento:</strong> @chamado.Complemento.Nome</p>
+                    <p><strong>Urgência:</strong> @chamado.Urgencia</p>
+                </div>
+            </div>
+            <p><strong>Observações:</strong> <span class="text-muted">@chamado.Observacoes</span></p>
+
+            <!-- Lista de atendimentos -->
+            <h5 class="text-primary mt-4">Atendimentos Relacionados</h5>
+            <div class="list-group">
+                                                @foreach (var atendimento in chamado.Atendimento)
+                                                {
+                        <div class="list-group-item mb-2">
+                            <p><strong>Atendimento ID:</strong> @atendimento.Id</p>
+                            <p><strong>Atendente:</strong> @atendimento.Pessoa.Nome</p>
+                            <p><strong>Data Início:</strong> @atendimento.DataHora_inicio</p>
+                            <p><strong>Data Término:</strong> @atendimento.DataHora_fim</p>
+                        </div>
+                                                }
+            </div>
+        </div>
+    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
+ 
 </div>

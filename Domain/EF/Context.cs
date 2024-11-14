@@ -12,14 +12,18 @@ namespace Domain.EF
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
 
+        public Context()
+        {
+        }
+
         internal DbSet<Usuario> Usuarios { get; set; }
-        internal DbSet<Atendimento> Atendimentos { get; set; }
+        public DbSet<Atendimento> Atendimentos { get; set; }
         public DbSet<Chamado> Chamados { get; set; }
-        internal DbSet<Complemento> Complementos { get; set; }
-        internal DbSet<Funcao> Funcoes { get; set; }
-        internal DbSet<Motivo> Motivos { get; set; }
+        public DbSet<Complemento> Complementos { get; set; }
+        public DbSet<Funcao> Funcoes { get; set; }
+        public DbSet<Motivo> Motivos { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
-        internal DbSet<Setor> Setores { get; set; }
+        public DbSet<Setor> Setores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,5 +1,6 @@
 ﻿using Domain.Domain;
 using Domain.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace Sistema.Controllers
 {
+    [Authorize(Roles = "Tecnologia")]
     public class ComplementoController : Controller
     {
         private readonly Context _context;
@@ -80,16 +82,27 @@ namespace Sistema.Controllers
         // POST: ComplementoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditPost(int id, Complemento model)
         {
-            try
+            if (id != model.Id)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                var complementoToUpdate = _context.Complementos.Find(id);
+                if (complementoToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                complementoToUpdate.Nome = model.Nome;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
+
+            return View(model);
         }
 
         // GET: ComplementoController/Delete/5
@@ -101,15 +114,24 @@ namespace Sistema.Controllers
         // POST: ComplementoController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeletePost(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    Complemento complemento= new Complemento().BuscarPorId(_context, id);
+                    complemento.Remover(_context);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View("Index");
+                }
             }
             catch
             {
-                return View();
+                return View("Index");
             }
         }
     }

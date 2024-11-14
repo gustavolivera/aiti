@@ -1,5 +1,6 @@
 ﻿using Domain.Domain;
 using Domain.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using System.Linq;
 
 namespace Sistema.Controllers
 {
+    [Authorize(Roles = "Tecnologia")]
     public class FuncaoController : Controller
     {
         private readonly Context _context;
@@ -79,16 +81,27 @@ namespace Sistema.Controllers
         // POST: FuncaoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult EditPost(int id, Funcao model)
         {
-            try
+            if (id != model.Id)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                var funcaoToUpdate = _context.Funcoes.Find(id);
+                if (funcaoToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                funcaoToUpdate.Nome = model.Nome;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
+
+            return View(model);
         }
 
         // GET: FuncaoController/Delete/5

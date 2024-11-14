@@ -11,19 +11,43 @@
                     <!-- Exemplo de item da lista -->
                 @foreach (var funcoes in Model.Funcoes)
                 {
-                   <li id="funcaoSelect" data-motivoid="@funcoes.SetorId" class="list-group-item d-flex justify-content-between align-items-center">
-                  @Html.DisplayFor(modelItem => funcoes.Nome)
-                    <span>
-                        <button class="text-white btn btn-sm btn-warning me-2">
-                            <i class="bi bi-pencil-fill"></i>
-                        </button>
-                        <form asp-action="DeletePost">
-                            <input type="hidden" name="id" value="@funcoes.Id" />
-                            <button type="submit" class="btn btn-sm btn-danger"> <i class="bi bi-trash-fill"></i> </button>
-                       </form>
-                    </span>
-                 </li>
-                }                 
+        <li id="funcaoSelect" data-motivoid="@funcoes.SetorId" class="list-group-item d-flex justify-content-between align-items-center">
+                        @Html.DisplayFor(modelItem => funcoes.Nome)
+            <span class="d-flex align-items-center">
+                <!-- Botão para abrir o modal -->
+                <button class="text-white btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editSectorModal" data-funcao-id="@funcoes.Id" data-funcao-nome="@funcoes.Nome">
+                    <i class="bi bi-pencil-fill"></i>
+                </button>
+                <form asp-action="DeletePost" class="mb-0">
+                    <input type="hidden" name="id" value="@funcoes.Id" />
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </form>
+            </span>
+        </li>
+                }
+
+<div class="modal fade" id="editSectorModal" tabindex="-1" aria-labelledby="editSectorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editSectorModalLabel">Editar Nome do Setor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="EditPost" method="post">
+                    <input type="hidden" name="Id" id="funcaoId" />
+                    <div class="mb-3">
+                        <label for="funcaoNome" class="form-label">Nome do Setor</label>
+                        <input class="form-control" type="text" id="funcaoNome" name="Nome" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>                 
                  
                 </ul>
                 <!-- Formulário para cadastrar nova funcao -->
@@ -67,7 +91,7 @@
             </div>
         </div>
 
-            <!--Modal de edicao-->
+@*             <!--Modal de edicao-->
             <div class="modal fade" id="editSectorModal" tabindex="-1" aria-labelledby="editSectorModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -85,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> *@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -106,5 +130,21 @@
 
         // Quando a página carregar, esconder todos os complementos inicialmente
         $('#funcaoSelect li[data-setorid]').hide();
+    });
+</script>
+
+            <script>
+    var editSectorModal = document.getElementById('editSectorModal');
+    editSectorModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var funcaoId = button.getAttribute('data-funcao-id');
+        var funcaoNome = button.getAttribute('data-funcao-nome');
+
+        // Definindo os valores no modal
+        var inputFuncaoId = editSectorModal.querySelector('#funcaoId');
+        var inputFuncaoNome = editSectorModal.querySelector('#funcaoNome');
+
+        inputFuncaoId.value = funcaoId;
+        inputFuncaoNome.value = funcaoNome;
     });
 </script>

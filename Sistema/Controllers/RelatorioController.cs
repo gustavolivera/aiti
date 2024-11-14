@@ -1,14 +1,34 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Domain;
+using Domain.EF;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sistema.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sistema.Controllers
 {
+    [Authorize(Roles = "Tecnologia")]
     public class RelatorioController : Controller
     {
+        private readonly Context _context;
+
+        public RelatorioController(Context context)
+        {
+            this._context = context;
+        }
+
         // GET: RelatorioController
         public ActionResult Index()
         {
-            return View();
+            Chamado chamado = new Chamado();
+            List<Chamado> chamados = chamado.BuscarTodos(_context).Where(c => c.Status == "Relatorio").ToList();
+            var viewModel = new RelatorioViewModel
+            {
+                Chamados = chamados
+            };
+            return View(viewModel);
         }
 
         // GET: RelatorioController/Details/5

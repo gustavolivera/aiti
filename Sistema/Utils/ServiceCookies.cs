@@ -13,10 +13,12 @@ namespace Sistema.Utils
         public void Login(HttpContext ctx, Usuario usuario)
         {
             var claims = new List<Claim>
+            //PARA PEGAR A FUNCAO DO USUARIO, POSSO USAR O ROLES, BASTA PROCURAR QUAL A PESSOA ASSOCIADA AO ID DO USUARIO LOGADO
+            //DEPOIS, BUSCAR PELO ID DA FUNCAO, QUAL O NOME DA FUNCAO DA PESSOA
     {
         new Claim(ClaimTypes.Name, usuario.Login), // Adiciona o nome de usuário
-        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()) // Adiciona o ID do usuário como NameIdentifier
-    };
+        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()), // Adiciona o ID do usuário como NameIdentifier
+        new Claim(ClaimTypes.Role, usuario.Pessoa.Funcao.Setor.Nome.ToString())    };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(claimsIdentity);

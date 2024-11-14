@@ -14,57 +14,89 @@
                 <th scope="col">Complemento</th>
                 <th scope="col">Urgência</th>
                 <th scope="col">Status</th>
-                <th scope="col">Ações</th>
+                <th class="text-center" scope="col">Ações</th>
             </tr>
         </thead>
-        <tbody>
-                        @foreach (var chamado in Model)
-                        {
-                    <tr>
-                        <td>
-                            <input class="mt-1" asp-for="@chamado.Id" type="radio" name="selectedChamadoId" value="@chamado.Id" data-observacoes="@chamado.Observacoes" />
-                        </td>
-                        <td>@chamado.Id</td>
-                        <td>@chamado.Motivos?.Nome</td>
-                        <td>@chamado.Complemento?.Nome</td>
-                        <td>@chamado.Urgencia</td>
-                        <td>@chamado.Status</td>
-                        <td>
-                                                        <!-- Ícone "Em andamento" -->
-                            <form asp-action="AlterarStatus" method="post" style="display: inline;">
-                                <input type="hidden" name="id" value="@chamado.Id" />
-                                <button type="submit" name="novoStatus" value="Em andamento" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Em andamento">
-                                    <i class="bi bi-hourglass-split text-warning"></i>
-                                </button>
-                            </form>
+<tbody>
+                    @foreach (var chamado in Model)
+                    {
+            <tr>
+                <td>
+                    <input class="mt-1" asp-for="@chamado.Id" type="radio" name="selectedChamadoId" value="@chamado.Id" data-observacoes="@chamado.Observacoes" />
+                </td>
+                <td>@chamado.Id</td>
+                <td>@chamado.Motivos?.Nome</td>
+                <td>@chamado.Complemento?.Nome</td>
+                <td>@chamado.Urgencia</td>
+                <td>@chamado.Status</td>
+                <td class="text-center">
+                    <!-- Ícone "Em andamento" -->
+    <form asp-action="AlterarStatus" method="post" style="display: inline;">
+                        <input type="hidden" name="id" value="@chamado.Id" />
+                        <button type="submit" name="novoStatus" value="Em andamento" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Em andamento"
+                                    @(chamado.Status == "Em andamento" || chamado.Status == "Concluido" ? "disabled" : "")>
+                            <i class="bi bi-hourglass-split"></i>
+                        </button>
+                    </form>
 
-                            <!-- Ícone "Concluído" -->
-                            <form asp-action="AlterarStatus" method="post" style="display: inline;">
-                                <input type="hidden" name="id" value="@chamado.Id" />
-                                <button type="submit" name="novoStatus" value="Concluido" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Concluído">
-                                    <i class="bi bi-check-circle-fill text-success"></i>
-                                </button>
-                            </form>
+                    <!-- Ícone "Concluído" -->
+                    <form asp-action="AlterarStatus" method="post" style="display: inline;">
+                        <input type="hidden" name="id" value="@chamado.Id" />
+                        <button type="submit" name="novoStatus" value="Concluido" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Concluído"
+                                    @(chamado.Status == "Concluido" || chamado.Status == "Aberto" ? "disabled" : "")>
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        </button>
+                    </form>
 
-                            <!-- Ícone "Pausado" -->
-                            <form asp-action="AlterarStatus" method="post" style="display: inline;">
-                                <input type="hidden" name="id" value="@chamado.Id" />
-                                <button type="submit" name="novoStatus" value="Pausado" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Pausado">
-                                    <i class="bi bi-pause-circle text-secondary"></i>
-                                </button>
-                            </form>
+                    <!-- Ícone "Pausado" -->
+                    <form asp-action="AlterarStatus" method="post" style="display: inline;">
+                        <input type="hidden" name="id" value="@chamado.Id" />
+                        <button type="submit" name="novoStatus" value="Pausado" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Marcar como Pausado"
+                                    @(chamado.Status == "Concluido" || chamado.Status == "Pausado" || chamado.Status == "Aberto" ? "disabled" : "")>
+                            <i class="bi bi-pause-circle text-secondary"></i>
+                        </button>
+                    </form>
 
-                            <!-- Botão "Gerar Relatório" -->
-                            <form asp-action="AlterarStatus" method="post" style="display: inline;">
-                                <input type="hidden" name="id" value="@chamado.Id" />
-                                <button type="submit" name="novoStatus" value="Relatorio" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Gerar Relatório">
-                                    <i class="bi bi-file-earmark-text text-info"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                        }
-        </tbody>
+                    <!-- Ícone "Gerar Relatório" -->
+                    <form asp-action="AlterarStatus" method="post" style="display: inline;">
+                        <input type="hidden" name="id" value="@chamado.Id" />
+                        <button type="submit" name="novoStatus" value="Relatorio" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="top" title="Gerar Relatório"
+                                    @(chamado.Status == "Aberto" ? "disabled" : "")>
+                            <i class="bi bi-file-earmark-text text-info"></i>
+                        </button>
+                    </form>
+
+                    <!-- Ícone de Olho para abrir o modal -->
+                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#chamadoModal" data-id="@chamado.Id" data-nome="@chamado.Pessoa.Nome" data-funcao="@chamado.Pessoa.Funcao.Nome" data-setor="@chamado.Pessoa.Funcao.Setor.Nome" data-telefone="@chamado.Pessoa.Telefone"  data-email="@chamado.Pessoa.Email" data-observacoes="@chamado.Observacoes">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </td>
+            </tr>
+                    }
+</tbody>
+
+<!-- Modal -->
+<div class="modal fade" id="chamadoModal" tabindex="-1" aria-labelledby="chamadoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chamadoModalLabel">Detalhes do Chamado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nome:</strong> <span id="modalNome"></span></p>
+                <p><strong>Função:</strong> <span id="modalFuncao"></span></p>
+                <p><strong>Setor:</strong> <span id="modalSetor"></span></p>
+                <p><strong>Telefone:</strong> <span id="modalTelefone"></span></p>
+                <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                <p><strong>Observações:</strong> <span id="modalObservacoes"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
     </table>
           </div>
           <!-- Área de Informações do Usuário -->
@@ -121,5 +153,23 @@
     })
 </script>
 
+<script>
+    var chamadoModal = document.getElementById('chamadoModal');
+    chamadoModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var nome = button.getAttribute('data-nome');
+        var funcao = button.getAttribute('data-funcao');
+        var setor = button.getAttribute('data-setor');
+        var telefone = button.getAttribute('data-telefone');
+        var email = button.getAttribute('data-email');
+        var observacoes = button.getAttribute('data-observacoes');
 
+        document.getElementById('modalNome').textContent = nome;
+        document.getElementById('modalFuncao').textContent = funcao;
+        document.getElementById('modalSetor').textContent = setor;
+        document.getElementById('modalTelefone').textContent = telefone;
+        document.getElementById('modalEmail').textContent = email;
+        document.getElementById('modalObservacoes').textContent = observacoes;
+    });
+</script>
 

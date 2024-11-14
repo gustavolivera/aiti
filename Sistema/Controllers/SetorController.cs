@@ -1,5 +1,6 @@
 ﻿using Domain.Domain;
 using Domain.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sistema.Models;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 
 namespace Sistema.Controllers
 {
+    [Authorize(Roles = "Tecnologia")]
     public class SetorController : Controller
     {
         private readonly Context _context;
@@ -72,16 +74,27 @@ namespace Sistema.Controllers
         // POST: SetorController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult EditPost(int id, Setor model)
         {
-            try
+            if (id != model.Id)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                var setorToUpdate = _context.Setores.Find(id);
+                if (setorToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                setorToUpdate.Nome = model.Nome;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
+
+            return View(model);
         }
 
         // GET: SetorController/Delete/5
@@ -93,20 +106,24 @@ namespace Sistema.Controllers
         // POST: SetorController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeletePost(int id)
         {
             try
             {
-                Usuario usuario = new Usuario().
-                    BuscarPorId(_context, id);
-
-                usuario.Remover(_context);
-
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    Setor setor = new Setor().BuscarPorId(_context, id);
+                    setor.Remover(_context);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View("Index");
+                }
             }
             catch
             {
-                return View();
+                return View("Index");
             }
         }
     }

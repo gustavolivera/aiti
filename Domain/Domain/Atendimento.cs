@@ -24,11 +24,30 @@ namespace Domain.Domain
             List<Atendimento> atendimentos = context.Atendimentos.ToList();
             return atendimentos;
         }
+        public void Salvar(Context context)
+        {
+            context.Atendimentos.Add(this);
+            context.SaveChanges();
+        }
 
         public void Alterar(Context context)
         {
             context.Entry(this).State = EntityState.Modified;
             context.SaveChanges();
+        }
+
+        public Atendimento BuscarPorId(Context context, int id)
+        {
+            Atendimento atendimento = context.
+                Atendimentos.Where(linha => linha.Id.Equals(id)).
+                FirstOrDefault();
+            return atendimento;
+        }
+
+        public List<Atendimento> BuscarTodos(Context context)
+        {
+            List<Atendimento> atendimentos = context.Atendimentos.ToList();
+            return atendimentos;
         }
 
         public void Remover(Context context)

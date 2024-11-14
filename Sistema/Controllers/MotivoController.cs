@@ -1,5 +1,6 @@
 ﻿using Domain.Domain;
 using Domain.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sistema.Models;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 
 namespace Sistema.Controllers
 {
+    [Authorize(Roles = "Tecnologia")]
     public class MotivoController : Controller
     {
         private readonly Context _context;
@@ -73,16 +75,27 @@ namespace Sistema.Controllers
         // POST: MotivoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditPost(int id, Motivo model)
         {
-            try
+            if (id != model.Id)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                var motivoToUpdate = _context.Motivos.Find(id);
+                if (motivoToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                motivoToUpdate.Nome = model.Nome;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
+
+            return View(model);
         }
 
         // GET: MotivoController/Delete/5
@@ -94,15 +107,24 @@ namespace Sistema.Controllers
         // POST: MotivoController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeletePost(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    Motivo motivo = new Motivo().BuscarPorId(_context, id);
+                    motivo.Remover(_context);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View("Index");
+                }
             }
             catch
             {
-                return View();
+                return View("Index");
             }
         }
     }

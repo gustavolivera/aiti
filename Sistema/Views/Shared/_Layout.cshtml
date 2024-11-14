@@ -1,4 +1,9 @@
-﻿<html lang="pt-br">
+﻿@using System.Security.Claims
+@{
+    var userRole = User.FindFirstValue(ClaimTypes.Role);
+}
+
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,9 +21,10 @@
       crossorigin="anonymous"
     ></script>
 
-    <title>Enviar Chamado</title>
+    <title>AITI</title>
 </head>
 <body style="background-color: #a0bac2;">
+
 
   <nav class="navbar navbar-light bg-body-tertiary">
     <div class="container-fluid">
@@ -37,7 +43,7 @@
             </div>
             <div class="offcanvas-body">
                 <!-- Informações do Usuário -->
-                <div class="mb-3" id="accordionUserInfo">
+@*                 <div class="mb-3" id="accordionUserInfo">
                     <div class="accordion-item">
                         <h2 class="accordion-header mb-3" id="headingUserInfo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUserInfo" aria-expanded="false" aria-controls="collapseUserInfo">
@@ -54,36 +60,42 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Opções de Navegação -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Chamado" asp-action="Index"><i class="bi bi-arrow-left-right"></i> Fluxo de Chamados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Relatorio" asp-action="Index"><i class="bi bi-gear"></i> Gestão de Chamados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Motivo" asp-action="Index"><i class="bi bi-tags"></i> Motivos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Complemento" asp-action="Index"><i class="bi bi-patch-plus"></i> Complementos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Pessoa" asp-action="Index"><i class="bi bi-person-add"></i> Pessoas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Setor" asp-action="Index"><i class="bi bi-building-gear"></i> Setores</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Funcao" asp-action="Index"><i class="bi bi-person-badge"></i> Funções</a>
-                    </li>
+                </div> *@
 
-                    <li class="nav-item">
-                        <a class="nav-link text-danger" asp-controller="Pessoa" asp-action="Logout"><i class="bi bi-box-arrow-right"></i> Sair</a>
-                    </li>
-                </ul>
-            </div>
+                        <!-- Opções de Navegação -->
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Chamado" asp-action="Create"><i class="bi bi-tools"></i> Cadastrar chamado</a>
+                            </li>
+                        @if (userRole == "Tecnologia")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Chamado" asp-action="Index"><i class="bi bi-arrow-left-right"></i> Fluxo de Chamados</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Relatorio" asp-action="Index"><i class="bi bi-gear"></i> Gestão de Chamados</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Setor" asp-action="Index"><i class="bi bi-building-gear"></i> Setores</a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" asp-controller="Funcao" asp-action="Index"><i class="bi bi-person-badge"></i> Funções</a>
+                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Motivo" asp-action="Index"><i class="bi bi-tags"></i> Motivos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Complemento" asp-action="Index"><i class="bi bi-patch-plus"></i> Complementos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Pessoa" asp-action="Index"><i class="bi bi-person-add"></i> Pessoas</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                                <a class="nav-link text-danger" asp-controller="Pessoa" asp-action="Logout"><i class="bi bi-box-arrow-right"></i> Sair</a>
+                            </li>
+                    </ul>
+                </div>
         </div>
     </div>
 </nav>

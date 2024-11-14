@@ -1,39 +1,35 @@
 ﻿@model Domain.Domain.Pessoa;
 
-<div class="container mt-5">
-    <h2>Cadastrar Pessoa</h2>
-
-    <form asp-action="Create">
-        <div class="mb-3">
-            <label asp-for="Nome" class="form-label"></label>
-            <input asp-for="Nome" class="form-control" />
-            <span asp-validation-for="Nome" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Email" class="form-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-        
-        <div class="mb-3">
-            <label asp-for="Senha" class="form-label"></label>
-            <input asp-for="Senha" class="form-control" />
-            <span asp-validation-for="Senha" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Telefone" class="form-label"></label>
-            <input asp-for="Telefone" class="form-control" />
-            <span asp-validation-for="Telefone" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Funcao" class="form-label"></label>
-            <select asp-for="FuncaoId" asp-items="@ViewBag.Funcoes" class="form-control"></select>
-            <span asp-validation-for="Funcao" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
-    </form>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="card p-4" style="width: 100%; max-width: 500px;">
+        <h2 class="text-center">Cadastrar Pessoa</h2>
+        <form asp-action="Create">
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Senha" class="form-label"></label>
+                <input asp-for="Senha" type="password" class="form-control" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Telefone" class="form-label"></label>
+                <input asp-for="Telefone" class="form-control" />
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Funcao" class="form-label"></label>
+                <select asp-for="FuncaoId" asp-items="@ViewBag.Funcoes" class="form-control"></select>
+                <span asp-validation-for="Funcao" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+        </form>
+    </div>
 </div>
