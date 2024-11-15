@@ -12,10 +12,6 @@ namespace Domain.EF
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
 
-        public Context()
-        {
-        }
-
         internal DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Atendimento> Atendimentos { get; set; }
         public DbSet<Chamado> Chamados { get; set; }
